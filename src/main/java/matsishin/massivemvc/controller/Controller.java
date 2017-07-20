@@ -155,7 +155,7 @@ class Controller {
         for (int ma : mas) {
             sum += ma;
         }
-        double mean = sum/mas.length;
+        double mean = sum / mas.length;
         int howMany = 0;
         for (int ma : mas) {
             if (ma > mean) howMany++;
@@ -170,7 +170,7 @@ class Controller {
         checkModel(model, ELEVENTH);
         int[] m1 = model.getInput().get(0).clone();
         int[] m2 = model.getInput().get(1);
-        if (m1.length!=m2.length)throw new ControllerException("missives of different size");
+        if (m1.length != m2.length) throw new ControllerException("missives of different size");
         for (int i = 0; i < m1.length; i++) {
             m1[i] = m1[i] + m2[i];
         }
@@ -178,6 +178,74 @@ class Controller {
         entities.add(new IntMasEntity("sum of each element:", m1));
         model.setOutput(entities);
     }
+
+    void concatMass(Model model) {
+        checkModel(model, TWELFTH);
+        int[] m1 = model.getInput().get(0);
+        int[] m2 = model.getInput().get(1);
+        int[] newMas = new int[m1.length + m2.length];
+        System.arraycopy(m1, 0, newMas, 0, m1.length);
+        System.arraycopy(m2, 0, newMas, m1.length, m2.length);
+        List<Entity> entities = new ArrayList<>();
+        entities.add(new IntMasEntity("concat mass:", newMas));
+        model.setOutput(entities);
+    }
+
+    void replaseMaxMin(Model model) {
+        checkModel(model, THIRTEENTH);
+        int[] mas = model.getInput().get(0).clone();
+        int minIndex = 0, maxIndex = 0;
+        for (int i = 0; i < mas.length; i++) {
+            if (mas[i] < mas[minIndex]) minIndex = i;
+            if (mas[i] > mas[maxIndex]) maxIndex = i;
+        }
+        mas[minIndex] = mas[minIndex] ^ mas[maxIndex];
+        mas[maxIndex] = mas[maxIndex] ^ mas[minIndex];
+        mas[minIndex] = mas[minIndex] ^ mas[maxIndex];
+        List<Entity> entities = new ArrayList<>();
+        entities.add(new IntMasEntity("massive with replaced min/max:", mas));
+        model.setOutput(entities);
+    }
+
+    void deleteMaxMin(Model model) {
+        checkModel(model, FOURTEENTH);
+        int[] mas = model.getInput().get(0).clone();
+        int minIndex = 0, maxIndex = 0;
+
+        if (mas.length < 2) throw new ControllerException("too small array");
+
+        for (int i = 0; i < mas.length; i++) {
+            if (mas[i] < mas[minIndex]) minIndex = i;
+        }
+
+        System.arraycopy(mas, minIndex + 1, mas, minIndex, mas.length - 1 - minIndex);
+        for (int i = 0; i < mas.length; i++) {
+            if (mas[i] > mas[maxIndex]) maxIndex = i;
+        }
+        System.arraycopy(mas, maxIndex + 1, mas, maxIndex, mas.length - 1 - maxIndex);
+        mas[mas.length - 1] = 0;
+        mas[mas.length - 2] = 0;
+
+        List<Entity> entities = new ArrayList<>();
+        entities.add(new IntMasEntity("massive with removed min & max:", mas));
+        model.setOutput(entities);
+    }
+
+    void splitNegAndPos (Model model){
+        checkModel(model, FIFTEENTH);
+        int[] mas = model.getInput().get(0).clone();
+        ArrayList<Integer> list1=new ArrayList<>();
+        ArrayList<Integer> list2=new ArrayList<>();
+        for (int ma : mas) {
+            if (ma < 0) list1.add(ma);
+            else list2.add(ma);
+        }
+        List<Entity> entities = new ArrayList<>();
+        entities.add(new IntMasEntity("massive of negatives:", list1.stream().mapToInt(i->i).toArray()));
+        entities.add(new IntMasEntity("massive of other:", list2.stream().mapToInt(i->i).toArray()));
+        model.setOutput(entities);
+    }
+
 
     private static void checkModel(Model model, TaskNumber taskNumber) { //todo: implement the verification of model
         if (!model.getNumber().equals(taskNumber)) throw new ControllerException("wrong model was passed");

@@ -28,6 +28,7 @@
 *.iws
 *.iml
 *.ipr
+/target
 ## Plugin-specific files:
 
 # IntelliJ

@@ -188,4 +188,92 @@ public class ControllerTest {
             assertTrue(expectedMass[i] == value1[i]);
         }
     }
+
+
+    @Test
+    public void testConcatMass(){
+        ArrayList<int[]> input = new ArrayList<>(1);
+        input.add(new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25});
+        input.add(new int[]{-1, 3, 2, 5, 3, 5, 3, 12, 16, 26, -25});
+        Model model = new Model(TWELFTH, input, null);
+        Controller controller = new Controller();
+        controller.concatMass(model);
+
+        String name1 = model.getOutput().get(0).getName();
+
+        int[] expectedMass = new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25,-1, 3, 2, 5, 3, 5, 3, 12, 16, 26, -25};
+        int[] value1 = (int[]) model.getOutput().get(0).getValue();
+        assertTrue(name1.equals("concat mass:"));
+        assertTrue(value1.length == expectedMass.length);
+        for (int i = 0; i < expectedMass.length; i++) {
+            assertTrue(expectedMass[i] == value1[i]);
+        }
+    }
+
+    @Test
+    public void testReplaseMaxMin(){
+        ArrayList<int[]> input = new ArrayList<>(1);
+        input.add(new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25});
+        Model model = new Model(THIRTEENTH, input, null);
+        Controller controller = new Controller();
+        controller.replaseMaxMin(model);
+
+        String name1 = model.getOutput().get(0).getName();
+
+        int[] expectedMass = new int[]{1, 5, 22, 35, 3, -7, -54, 1, -46, 26, 25};
+        int[] value1 = (int[]) model.getOutput().get(0).getValue();
+        assertTrue(name1.equals("massive with replaced min/max:"));
+        assertTrue(value1.length == expectedMass.length);
+        for (int i = 0; i < expectedMass.length; i++) {
+            assertTrue(expectedMass[i] == value1[i]);
+        }
+    }
+
+    @Test
+    public void testDeleteMaxMin(){
+        ArrayList<int[]> input = new ArrayList<>(1);
+        input.add(new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25});
+        Model model = new Model(FOURTEENTH, input, null);
+        Controller controller = new Controller();
+        controller.deleteMaxMin(model);
+
+        String name1 = model.getOutput().get(0).getName();
+
+        int[] expectedMass = new int[]{1, 5, 22, 3, -7, 1, -46, 26, 25,0,0};
+        int[] value1 = (int[]) model.getOutput().get(0).getValue();
+
+        assertTrue(name1.equals("massive with removed min & max:"));
+        assertTrue(value1.length == expectedMass.length);
+        for (int i = 0; i < expectedMass.length; i++) {
+            assertTrue(expectedMass[i] == value1[i]);
+        }
+    }
+
+    @Test
+    public void testSplitNegAndPos(){
+        ArrayList<int[]> input = new ArrayList<>(1);
+        input.add(new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25});
+        Model model = new Model(FIFTEENTH, input, null);
+        Controller controller = new Controller();
+        controller.splitNegAndPos(model);
+
+        String name1 = model.getOutput().get(0).getName();
+        String name2 = model.getOutput().get(1).getName();
+
+        int[] expectedMass1 = new int[]{-54, -7, -46};
+        int[] expectedMass2 = new int[]{1, 5, 22, 3, 35, 1, 26, 25};
+        int[] value1 = (int[]) model.getOutput().get(0).getValue();
+        int[] value2 = (int[]) model.getOutput().get(1).getValue();
+
+
+        assertTrue(name1.equals("massive of negatives:"));
+        assertTrue(name2.equals("massive of other:"));
+        assertTrue(value1.length == expectedMass1.length);
+        for (int i = 0; i < expectedMass1.length; i++) {
+            assertTrue(expectedMass1[i] == value1[i]);
+        }
+        for (int i = 0; i < expectedMass2.length; i++) {
+            assertTrue(expectedMass2[i] == value2[i]);
+        }
+    }
 }
