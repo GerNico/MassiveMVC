@@ -211,41 +211,96 @@ class Controller {
         checkModel(model, FOURTEENTH);
         int[] mas = model.getInput().get(0).clone();
         int minIndex = 0, maxIndex = 0;
-
         if (mas.length < 2) throw new ControllerException("too small array");
+        ArrayList<Integer> list = new ArrayList<>(mas.length - 2);
 
         for (int i = 0; i < mas.length; i++) {
             if (mas[i] < mas[minIndex]) minIndex = i;
-        }
-
-        System.arraycopy(mas, minIndex + 1, mas, minIndex, mas.length - 1 - minIndex);
-        for (int i = 0; i < mas.length; i++) {
             if (mas[i] > mas[maxIndex]) maxIndex = i;
         }
-        System.arraycopy(mas, maxIndex + 1, mas, maxIndex, mas.length - 1 - maxIndex);
-        mas[mas.length - 1] = 0;
-        mas[mas.length - 2] = 0;
-
+        for (int i = 0; i < mas.length; i++) {
+            if (i != minIndex && i != maxIndex) list.add(mas[i]);
+        }
         List<Entity> entities = new ArrayList<>();
-        entities.add(new IntMasEntity("massive with removed min & max:", mas));
+        entities.add(new IntMasEntity("massive with removed min & max:", list.stream().mapToInt(i -> i).toArray()));
         model.setOutput(entities);
     }
 
-    void splitNegAndPos (Model model){
+    void splitNegAndPos(Model model) {
         checkModel(model, FIFTEENTH);
         int[] mas = model.getInput().get(0).clone();
-        ArrayList<Integer> list1=new ArrayList<>();
-        ArrayList<Integer> list2=new ArrayList<>();
+        ArrayList<Integer> list1 = new ArrayList<>();
+        ArrayList<Integer> list2 = new ArrayList<>();
         for (int ma : mas) {
             if (ma < 0) list1.add(ma);
             else list2.add(ma);
         }
         List<Entity> entities = new ArrayList<>();
-        entities.add(new IntMasEntity("massive of negatives:", list1.stream().mapToInt(i->i).toArray()));
-        entities.add(new IntMasEntity("massive of other:", list2.stream().mapToInt(i->i).toArray()));
+        entities.add(new IntMasEntity("massive of negatives:", list1.stream().mapToInt(i -> i).toArray()));
+        entities.add(new IntMasEntity("massive of other:", list2.stream().mapToInt(i -> i).toArray()));
         model.setOutput(entities);
     }
 
+    void allOds(Model model) {
+        checkModel(model, SIXTEENTH);
+        int[] mas = model.getInput().get(0).clone();
+        int[] mas2 = model.getInput().get(1).clone();
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < mas.length; i++) {
+            if (mas[i] % 2 == 0) list.add(mas[i]);
+            if (mas2[i] % 2 == 0) list.add(mas2[i]);
+        }
+        List<Entity> entities = new ArrayList<>();
+        entities.add(new IntMasEntity("massive of ods:", list.stream().mapToInt(i -> i).toArray()));
+        model.setOutput(entities);
+    }
+
+    void deleteMaxMinDuplicates(Model model) {
+        checkModel(model, SEVENTEENTH);
+        int[] mas = model.getInput().get(0).clone();
+        int minIndex = 0, maxIndex = 0;
+        if (mas.length < 2) throw new ControllerException("too small array");
+        ArrayList<Integer> list = new ArrayList<>(mas.length - 2);
+
+        for (int i = 0; i < mas.length; i++) {
+            if (mas[i] < mas[minIndex]) minIndex = i;
+            if (mas[i] > mas[maxIndex]) maxIndex = i;
+        }
+        for (int i = 0; i < mas.length; i++) {
+            if (!(i != minIndex && mas[i] == mas[minIndex]) && !(mas[i] == mas[maxIndex] && i != maxIndex))
+                list.add(mas[i]);
+        }
+        List<Entity> entities = new ArrayList<>();
+        entities.add(new IntMasEntity("massive with removed min & max duplicates:", list.stream().mapToInt(i -> i).toArray()));
+        model.setOutput(entities);
+    }
+
+    void betwenMeans(Model model) {
+        checkModel(model, EIGHTEENTH);
+        int[] m1 = model.getInput().get(0);
+        int[] m2 = model.getInput().get(1);
+        List<Integer> list=new ArrayList<>((m1.length+m2.length)/2);
+        double mean1 = 0, mean2 = 0,buf;
+        for (int aM1 : m1) {
+            mean1 += aM1;
+        }
+        mean1 = mean1 / m1.length;
+        for (int aM2 : m2) {
+            mean2 += aM2;
+        }
+        mean2 = mean2 / m2.length;
+        if (mean1>mean2){buf=mean1;mean1=mean2;mean2=buf;}
+        for (int element : m1) {
+            if (mean1<element&& element<mean2)list.add(element);
+        }
+        for (int element : m2) {
+            if (mean1<element&& element<mean2)list.add(element);
+        }
+
+        List<Entity> entities = new ArrayList<>();
+        entities.add(new IntMasEntity("result mass:", list.stream().mapToInt(i -> i).toArray()));
+        model.setOutput(entities);
+    }
 
     private static void checkModel(Model model, TaskNumber taskNumber) { //todo: implement the verification of model
         if (!model.getNumber().equals(taskNumber)) throw new ControllerException("wrong model was passed");

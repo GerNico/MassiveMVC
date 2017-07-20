@@ -1,7 +1,7 @@
 package matsishin.massivemvc.controller;
 
-public class ControllerException extends RuntimeException {
-    public ControllerException(String message) {
+class ControllerException extends RuntimeException {
+    ControllerException(String message) {
         super(message);
     }
 }

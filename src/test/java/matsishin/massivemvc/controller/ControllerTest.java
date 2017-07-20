@@ -4,6 +4,7 @@ import matsishin.massivemvc.model.Model;
 
 import static matsishin.massivemvc.model.TaskNumber.*;
 
+import matsishin.massivemvc.view.View;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class ControllerTest {
 
         assertTrue(name1.equals("normal order") && val1.equals("1 5 7 54 3 7 3 1 45 86 25"));
         assertTrue(name2.equals("reverse order") && val2.equals("25 86 45 1 3 7 3 54 7 5 1"));
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
@@ -38,6 +41,8 @@ public class ControllerTest {
         String name = model.getOutput().get(0).getName();
         Integer value = (Integer) model.getOutput().get(0).getValue();
         assertTrue(name.equals("total sum is:") && value.equals(237));
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
@@ -50,6 +55,8 @@ public class ControllerTest {
         String name = model.getOutput().get(0).getName();
         Integer value = (Integer) model.getOutput().get(0).getValue();
         assertTrue(name.equals("max value is:") && value.equals(86));
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
@@ -65,6 +72,8 @@ public class ControllerTest {
         Integer value2 = (Integer) model.getOutput().get(1).getValue();
         assertTrue(name1.equals("index of min value is:") && value1.equals(2));
         assertTrue(name2.equals("min value is:") && value2.equals(-7));
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
@@ -80,6 +89,8 @@ public class ControllerTest {
         Integer value2 = (Integer) model.getOutput().get(1).getValue();
         assertTrue(name1.equals("number of evens is:") && value1.equals(3));
         assertTrue(name2.equals("sum of evens is:") && value2.equals(186));
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
@@ -95,6 +106,8 @@ public class ControllerTest {
         Integer value2 = (Integer) model.getOutput().get(1).getValue();
         assertTrue(name1.equals("number of evens 20<e<30 is:") && value1.equals(2));
         assertTrue(name2.equals("sum of evens 20<e<30 is:") && value2.equals(48));
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
@@ -111,6 +124,8 @@ public class ControllerTest {
         Integer value2 = (Integer) model.getOutput().get(1).getValue();
         assertTrue(name1.equals("min odd number is:") && value1.equals(1));
         assertTrue(name2.equals("max even number is:") && value2.equals(46));
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
@@ -130,6 +145,8 @@ public class ControllerTest {
         for (int i = 0; i < expectedMass.length; i++) {
             assertTrue(expectedMass[i] == value1[i]);
         }
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
@@ -149,6 +166,8 @@ public class ControllerTest {
         for (int i = 0; i < expectedMass.length; i++) {
             assertTrue(expectedMass[i] == value1[i]);
         }
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
@@ -163,9 +182,11 @@ public class ControllerTest {
         Double value1 = (Double) model.getOutput().get(0).getValue();
         String name2 = model.getOutput().get(1).getName();
         Integer value2 = (Integer) model.getOutput().get(1).getValue();
-        assertTrue(name1.equals("mean value is:") );
-        assertEquals(value1,1.0,0.0001);
+        assertTrue(name1.equals("mean value is:"));
+        assertEquals(value1, 1.0, 0.0001);
         assertTrue(name2.equals("Number of elements bigger than mean:") && value2.equals(6));
+        View view = new View();
+        view.soutTheModel(model);
     }
 
 
@@ -187,11 +208,13 @@ public class ControllerTest {
         for (int i = 0; i < expectedMass.length; i++) {
             assertTrue(expectedMass[i] == value1[i]);
         }
+        View view = new View();
+        view.soutTheModel(model);
     }
 
 
     @Test
-    public void testConcatMass(){
+    public void testConcatMass() {
         ArrayList<int[]> input = new ArrayList<>(1);
         input.add(new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25});
         input.add(new int[]{-1, 3, 2, 5, 3, 5, 3, 12, 16, 26, -25});
@@ -201,17 +224,19 @@ public class ControllerTest {
 
         String name1 = model.getOutput().get(0).getName();
 
-        int[] expectedMass = new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25,-1, 3, 2, 5, 3, 5, 3, 12, 16, 26, -25};
+        int[] expectedMass = new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25, -1, 3, 2, 5, 3, 5, 3, 12, 16, 26, -25};
         int[] value1 = (int[]) model.getOutput().get(0).getValue();
         assertTrue(name1.equals("concat mass:"));
         assertTrue(value1.length == expectedMass.length);
         for (int i = 0; i < expectedMass.length; i++) {
             assertTrue(expectedMass[i] == value1[i]);
         }
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
-    public void testReplaseMaxMin(){
+    public void testReplaseMaxMin() {
         ArrayList<int[]> input = new ArrayList<>(1);
         input.add(new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25});
         Model model = new Model(THIRTEENTH, input, null);
@@ -227,10 +252,12 @@ public class ControllerTest {
         for (int i = 0; i < expectedMass.length; i++) {
             assertTrue(expectedMass[i] == value1[i]);
         }
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
-    public void testDeleteMaxMin(){
+    public void testDeleteMaxMin() {
         ArrayList<int[]> input = new ArrayList<>(1);
         input.add(new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25});
         Model model = new Model(FOURTEENTH, input, null);
@@ -239,7 +266,7 @@ public class ControllerTest {
 
         String name1 = model.getOutput().get(0).getName();
 
-        int[] expectedMass = new int[]{1, 5, 22, 3, -7, 1, -46, 26, 25,0,0};
+        int[] expectedMass = new int[]{1, 5, 22, 3, -7, 1, -46, 26, 25};
         int[] value1 = (int[]) model.getOutput().get(0).getValue();
 
         assertTrue(name1.equals("massive with removed min & max:"));
@@ -247,10 +274,12 @@ public class ControllerTest {
         for (int i = 0; i < expectedMass.length; i++) {
             assertTrue(expectedMass[i] == value1[i]);
         }
+        View view = new View();
+        view.soutTheModel(model);
     }
 
     @Test
-    public void testSplitNegAndPos(){
+    public void testSplitNegAndPos() {
         ArrayList<int[]> input = new ArrayList<>(1);
         input.add(new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25});
         Model model = new Model(FIFTEENTH, input, null);
@@ -275,5 +304,72 @@ public class ControllerTest {
         for (int i = 0; i < expectedMass2.length; i++) {
             assertTrue(expectedMass2[i] == value2[i]);
         }
+        View view = new View();
+        view.soutTheModel(model);
+    }
+
+    @Test
+    public void testAllOds() {
+        ArrayList<int[]> input = new ArrayList<>(1);
+        input.add(new int[]{1, 5, 22, -54, 3, -7, 35, 1, -46, 26, 25});
+        input.add(new int[]{331, -5, 26, 44, 23, 12, 6, 9, -6, -7, -8});
+        Model model = new Model(SIXTEENTH, input, null);
+        Controller controller = new Controller();
+        controller.allOds(model);
+
+        String name = model.getOutput().get(0).getName();
+        int[] expectedMass = new int[]{22, 26, -54, 44, 12, 6, -46, -6, 26, -8};
+        int[] value = (int[]) model.getOutput().get(0).getValue();
+
+        assertTrue(name.equals("massive of ods:"));
+        assertTrue(value.length == expectedMass.length);
+        for (int i = 0; i < expectedMass.length; i++) {
+            assertTrue(expectedMass[i] == value[i]);
+        }
+        View view = new View();
+        view.soutTheModel(model);
+    }
+
+    @Test
+    public void testDeleteMaxMinDuplicates() {
+        ArrayList<int[]> input = new ArrayList<>(1);
+        input.add(new int[]{1, 5, 22, -54, 26, -54, 25});
+        Model model = new Model(SEVENTEENTH, input, null);
+        Controller controller = new Controller();
+        controller.deleteMaxMinDuplicates(model);
+
+        String name = model.getOutput().get(0).getName();
+        int[] expectedMass = new int[]{1, 5, 22, -54, 26, 25};
+        int[] value = (int[]) model.getOutput().get(0).getValue();
+
+        assertTrue(name.equals("massive with removed min & max duplicates:"));
+        assertTrue(value.length == expectedMass.length);
+        for (int i = 0; i < expectedMass.length; i++) {
+            assertTrue(expectedMass[i] == value[i]);
+        }
+        View view = new View();
+        view.soutTheModel(model);
+    }
+
+    @Test
+    public void testBetwenMeans() {
+        ArrayList<int[]> input = new ArrayList<>(1);
+        input.add(new int[]{28, 21, 0, 33, 32});
+        input.add(new int[]{1, 20, 27, 10, 35});
+        Model model = new Model(EIGHTEENTH, input, null);
+        Controller controller = new Controller();
+        controller.betwenMeans(model);
+
+        String name = model.getOutput().get(0).getName();
+        int[] expectedMass = new int[]{21, 20};
+        int[] value = (int[]) model.getOutput().get(0).getValue();
+
+        assertTrue(name.equals("result mass:"));
+        assertTrue(value.length == expectedMass.length);
+        for (int i = 0; i < expectedMass.length; i++) {
+            assertTrue(expectedMass[i] == value[i]);
+        }
+        View view = new View();
+        view.soutTheModel(model);
     }
 }
